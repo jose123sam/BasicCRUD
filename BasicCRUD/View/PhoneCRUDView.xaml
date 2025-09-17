@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="BasicCRUD.View.PhoneCRUDView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BasicCRUD.View"
+             mc:Ignorable="d" 
+             xmlns:dc="clr-namespace:BasicCRUD.ViewModel"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <dc:PhoneCRUDViewModel/>
+    </UserControl.DataContext>
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--Create.-->
+        <Border Grid.Column="0" 
+                Grid.Row="0">
+            <Grid x:Name="regsiterGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Width="auto" Height="auto" 
+                       VerticalAlignment="Center" HorizontalAlignment="Center">
+                    Manufacturer :</Label>
+                <TextBox Grid.Row="0"
+                   Grid.Column="1" x:Name="manuTextBox" Text="{Binding Manufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Width="auto" Height="auto" 
+                       VerticalAlignment="Center" HorizontalAlignment="Center">
+                    ram Size :</Label>
+                <TextBox Grid.Row="1"
+                   Grid.Column="1" x:Name="ramSizeTextBox"
+                         Text="{Binding RamSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Grid.Row="2" Grid.Column="0"
+                        Width="auto" Name="submitButton" Content="Submit"
+                        Command="{Binding RegisterCommand}"/>
+            </Grid>
+        </Border>
+        <!--Read.-->
+        <Grid x:Name="selectPhoneGrid"
+              Grid.Row="0"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" x:Name="manuTextBlock" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           Text="hi"/>
+                <TextBlock Grid.Column="1" x:Name="ramTextBlock" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Text="hll"/>
+        </Grid>
+        <!--Update, Delete.-->
+        <DataGrid x:Name="phoneDataGrid"
+                  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+    </Grid>
+</UserControl>
