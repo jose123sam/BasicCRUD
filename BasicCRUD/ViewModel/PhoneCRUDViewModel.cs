@@ -1,4 +1,7 @@
-﻿using BasicCRUD.Model;
+﻿using BasicCRUD.DataBaseFolder;
+using BasicCRUD.Model;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Windows.Input;
 
 namespace BasicCRUD.ViewModel;
@@ -6,6 +9,7 @@ namespace BasicCRUD.ViewModel;
 internal class PhoneCRUDViewModel : ViewModelBase
 {
 	PhoneCRUDModel model = new();
+	PhoneRepository phoneRepository = new();
 
 	private int ramSize;
 
@@ -29,11 +33,20 @@ internal class PhoneCRUDViewModel : ViewModelBase
 		}
 	}
 
+	private ObservableCollection<PhoneCRUDModel> savedPhoneDetails;
+
+	public ObservableCollection<PhoneCRUDModel> SavedPhoneDetails
+	{
+		get { return savedPhoneDetails; }
+		set { savedPhoneDetails = value; OnPropertyChanged(nameof(SavedPhoneDetails)); }
+	}
+
 	public ICommand RegisterCommand { get; set; }
 
     public PhoneCRUDViewModel()
     {
 		RegisterCommand = new RelayCommand(Register, CanRegisterExecute);
+		DisplayData();
     }
 
     private bool CanRegisterExecute(object obj)
@@ -43,6 +56,25 @@ internal class PhoneCRUDViewModel : ViewModelBase
 
     private void Register(object obj)
     {
-        // Create.
+        phoneRepository.CreatePhone(Manufacturer, RamSize);
+		DisplayData();
+    }
+
+    private void DisplayData()
+    {
+        var collection = new ObservableCollection<PhoneCRUDModel>();
+
+        foreach (DataRow row in phoneRepository.GetAllData().Rows)
+        {
+            var item = new PhoneCRUDModel()
+            {
+                Manufacturer = row.IsNull("Manufacturer") ? string.Empty : row.Field<string>("Manufacturer"),
+                RamSize = row.IsNull("RamSize") ? 0 : row.Field<int>("RamSize")
+            };
+
+            collection.Add(item);
+        }
+
+		SavedPhoneDetails = collection;
     }
 }

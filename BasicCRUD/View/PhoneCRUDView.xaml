@@ -60,15 +60,17 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" x:Name="manuTextBlock" 
+            <TextBlock Grid.Column="0" x:Name="manuTextBlock" 
                            VerticalAlignment="Center" HorizontalAlignment="Center" 
                            Text="hi"/>
-                <TextBlock Grid.Column="1" x:Name="ramTextBlock" 
+            <TextBlock Grid.Column="1" x:Name="ramTextBlock" 
                            VerticalAlignment="Center" HorizontalAlignment="Center"
                            Text="hll"/>
         </Grid>
         <!--Update, Delete.-->
         <DataGrid x:Name="phoneDataGrid"
-                  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+                  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                  ItemsSource="{Binding SavedPhoneDetails, UpdateSourceTrigger=PropertyChanged}"
+                  AutoGenerateColumns="True"/>
     </Grid>
 </UserControl>
