@@ -44,4 +44,21 @@ public class PhoneRepository
         return dataTable;
     }
 
+    internal void DeleteEntry(string manufacturer, int ramSize)
+    {
+        using (SqlConnection connection = new(connectionString))
+        {
+            string query = "DELETE FROM PhoneDB WHERE Manufacturer = @Manufacturer AND RamSize = @RamSize";
+
+            using (SqlCommand command = new(query, connection))
+            {
+                command.Parameters.AddWithValue("@Manufacturer", manufacturer);
+                command.Parameters.AddWithValue("@RamSize", ramSize);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+    }
 }

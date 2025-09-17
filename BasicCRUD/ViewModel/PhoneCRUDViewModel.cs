@@ -11,8 +11,6 @@ internal class PhoneCRUDViewModel : ViewModelBase
 	PhoneCRUDModel model = new();
 	PhoneRepository phoneRepository = new();
 
-	private int ramSize;
-
 	public int RamSize
 	{
 		get => model.RamSize;
@@ -21,8 +19,6 @@ internal class PhoneCRUDViewModel : ViewModelBase
 			OnPropertyChanged(nameof(RamSize));
 		}
 	}
-
-	private string manufacturer = string.Empty;
 
 	public string Manufacturer
     {
@@ -38,15 +34,44 @@ internal class PhoneCRUDViewModel : ViewModelBase
 	public ObservableCollection<PhoneCRUDModel> SavedPhoneDetails
 	{
 		get { return savedPhoneDetails; }
-		set { savedPhoneDetails = value; OnPropertyChanged(nameof(SavedPhoneDetails)); }
-	}
+		set {
+			savedPhoneDetails = value;
+			OnPropertyChanged(nameof(SavedPhoneDetails));
+        }
+    }
 
 	public ICommand RegisterCommand { get; set; }
+	public ICommand DeleteCommand { get; set; }
 
-    public PhoneCRUDViewModel()
+	private PhoneCRUDModel selectedEntry;
+
+	public PhoneCRUDModel SelectedEntry
+	{
+		get { return selectedEntry; }
+		set { 
+			selectedEntry = value; 
+		}
+	}
+
+	public PhoneCRUDViewModel()
     {
 		RegisterCommand = new RelayCommand(Register, CanRegisterExecute);
-		DisplayData();
+        DeleteCommand = new RelayCommand(Delete, CanDeleteExecute);
+		SavedPhoneDetails = new ObservableCollection<PhoneCRUDModel>();
+    }
+
+    private void Delete(object obj)
+    {
+		if(SelectedEntry is not null)
+        {
+            phoneRepository.DeleteEntry(SelectedEntry.Manufacturer, SelectedEntry.RamSize);
+            DisplayData();
+        }
+    }
+
+    private bool CanDeleteExecute(object obj)
+    {
+        return true;
     }
 
     private bool CanRegisterExecute(object obj)
